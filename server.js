@@ -10,7 +10,13 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",          // for local dev
+    "https://frontend-neon-phi-10.vercel.app" // replace with your Vercel URL
+  ],
+  credentials: true, // if you use cookies, otherwise optional
+}));
 app.use(express.json());
 
 // Routes
