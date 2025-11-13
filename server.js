@@ -10,20 +10,28 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors({
-  origin: [
-    "http://localhost:3000",          // for local dev
-    "https://frontend-neon-phi-10.vercel.app" // replace with your Vercel URL
-  ],
-  credentials: true, // if you use cookies, otherwise optional
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // for local dev
+      "https://frontend-neon-phi-10.vercel.app", // replace with your Vercel frontend URL
+    ],
+    credentials: true, // if you use cookies, otherwise optional
+  })
+);
 app.use(express.json());
+
+// Root route - friendly message
+app.get("/", (req, res) => {
+  res.send("Backend server is running! API endpoints are available under /api.");
+});
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/sessions", require("./routes/sessions"));
 app.use("/api/teachers", require("./routes/teachers"));
 app.use("/api/chat", require("./routes/chat"));
+
 // Connect MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
